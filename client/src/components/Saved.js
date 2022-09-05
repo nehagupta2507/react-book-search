@@ -8,6 +8,7 @@ class Saved extends Component {
   };
 
   componentDidMount() {
+    console.log("In -Saved- componentDidMount called -> loading books");
     this.loadBooks();
   };
 

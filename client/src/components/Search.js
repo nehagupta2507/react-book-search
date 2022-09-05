@@ -2,10 +2,6 @@ import React, { Component } from 'react';
 import API from "../API";
 import SearchCard from "./Card/SearchCard";
 
-import socketIOClient from "socket.io-client";
-
-let socket;
-
 class Search extends Component {
   state = {
     result: [],
@@ -13,24 +9,8 @@ class Search extends Component {
     savedTitle: "",
   };
 
-  componentDidMount() {
-    this.initSocket();
-  };
-
-  initSocket = () => {
-    // const endpoint = `localhost:${process.env.PORT || 3001}`;
-    // const socket = socketIOClient(endpoint);
-    socket = socketIOClient();
-    socket.on('message', (msg) => {
-      document.querySelector(".socket-msg p").innerHTML = msg;
-      document.querySelector(".socket-msg").classList.remove("hide");
-      setTimeout(() => {
-        document.querySelector(".socket-msg").classList.add("hide");
-      }, 3500);
-    });
-  }
-
   handleSaveSubmit = (e) => {
+    console.log("Search --> Save Button clicked + calling ");
     e.preventDefault();
     const id = e.target.name;
     let buttonValue = e.target;
@@ -60,7 +40,6 @@ class Search extends Component {
                     savedTitle: bookData.volumeInfo.title
                   })
 
-                  socket.emit('message', this.state.savedTitle);
                 });
 
             } else {
@@ -108,7 +87,6 @@ class Search extends Component {
   render() {
     return (
       <main>
-
         <div className="title-container">
           <div className="title">
             <h1 id="message">You know you've read a good book when you turn the last page and feel a little as if you have lost a friend.</h1>
@@ -121,7 +99,6 @@ class Search extends Component {
             </div>
           </div>
         </div>
-
         {this.state.result.map(book =>
           <SearchCard
             key={book.id}
